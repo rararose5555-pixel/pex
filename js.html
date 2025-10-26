@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><b>Mini Shopping Cart</title></b>
+    <style>
+        body { font-family: Arial,sans-serif ;background-color: aquamarine; padding: 20px; }
+        input, button { margin: 5px; padding: 5px; }
+        .output { margin-top: 10px; font-weight: bold; white-space: pre-line; }
+    </style>
+</head>
+<body>
+
+<h2>Mini Shopping Cart</h2>
+
+<input type="text" id="itemName" placeholder="Item Name">
+<input type="number" id="itemPrice" placeholder="Price">
+<button onclick="addItem()">Add</button>
+<button onclick="showCart()">Show Cart</button>
+
+<div id="cartOutput" class="output"></div>
+<div id="totalOutput" class="output"></div>
+
+<script>
+let cart = [];
+
+class Item {
+    constructor(name, price) {
+        this.name = name;
+        this.price = price;
+    }
+}
+
+function addItem() {
+    let name = document.getElementById('itemName').value.trim();
+    let price = Number(document.getElementById('itemPrice').value);
+
+    if(name === "" || isNaN(price) || price <= 0) {
+        alert("Enter valid item name and price!");
+        return;
+    }
+
+    try {
+        cart.push(new Item(name, price));
+        document.getElementById('cartOutput').innerText = `Added: ${name} - $${price}`;
+        document.getElementById('itemName').value = "";
+        document.getElementById('itemPrice').value = "";
+    } catch(e) {
+        alert("Error: " + e.message);
+    }
+}
+
+function showCart() {
+    if(cart.length === 0) {
+        document.getElementById('cartOutput').innerText = "Cart is empty!";
+        document.getElementById('totalOutput').innerText = "";
+        return;
+    }
+
+    let output = "Items in Cart:\n";
+    let total = 0;
+
+    for(let i=0; i<cart.length; i++) {
+        output += `${i+1}. ${cart[i].name} - $${cart[i].price}\n`;
+        total += cart[i].price;
+    }
+
+    document.getElementById('cartOutput').innerText = output;
+    document.getElementById('totalOutput').innerText = "Total: $" + total;
+}
+</script>
+
+</body>
+</html>
